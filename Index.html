@@ -2,53 +2,239 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Моя страница</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Nelfi Dm | Панель</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
-            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
-            font-family: 'Segoe UI', Arial, sans-serif;
-            color: #fff;
-            text-align: center;
-            padding: 50px;
+            background: linear-gradient(135deg, #0a0a0f 0%, #0d1117 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e6e6e6;
             min-height: 100vh;
+            padding: 20px;
         }
         .container {
-            max-width: 600px;
+            max-width: 500px;
             margin: 0 auto;
-            background: rgba(0,0,0,0.5);
-            border-radius: 20px;
-            padding: 30px;
         }
-        h1 { color: #ffd700; }
-        button {
-            background: #ffd700;
-            color: #000;
+        /* Карточка профиля */
+        .profile-card {
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #30363d;
+            backdrop-filter: blur(10px);
+            text-align: center;
+        }
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 40px;
+        }
+        .username {
+            font-size: 20px;
+            font-weight: bold;
+            color: #58a6ff;
+        }
+        .user-id {
+            font-size: 14px;
+            color: #8b949e;
+            margin-top: 5px;
+        }
+        /* Карточка баланса */
+        .balance-card {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid #4cc9f0;
+        }
+        .balance-amount {
+            font-size: 48px;
+            font-weight: bold;
+            color: #4cc9f0;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.3);
+        }
+        .balance-label {
+            font-size: 14px;
+            color: #8b949e;
+            margin-top: 5px;
+        }
+        /* Статистика */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 16px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #30363d;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f72585;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #8b949e;
+            margin-top: 5px;
+        }
+        /* Кнопки */
+        .button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 12px;
             font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.02);
+        }
+        .button-secondary {
+            background: rgba(88, 166, 255, 0.2);
+            border: 1px solid #58a6ff;
+        }
+        /* Топ */
+        .top-card {
+            background: rgba(22, 27, 34, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid #30363d;
+        }
+        .top-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #58a6ff;
+        }
+        .top-list {
+            list-style: none;
+        }
+        .top-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #30363d;
+        }
+        .rank-1 { color: #ffd700; }
+        .rank-2 { color: #c0c0c0; }
+        .rank-3 { color: #cd7f32; }
+        /* Футер */
+        .footer {
+            text-align: center;
+            font-size: 11px;
+            color: #6e7681;
             margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🔥 ДОБРО ПОЖАЛОВАТЬ 🔥</h1>
-        <p>Твой уникальный ID: <strong id="userId">-</strong></p>
-        <p>Твой Username: <strong id="username">-</strong></p>
-        <button onclick="alert('Привет!')">Нажми меня</button>
+        <!-- Профиль -->
+        <div class="profile-card">
+            <div class="avatar">👤</div>
+            <div class="username" id="username">Загрузка...</div>
+            <div class="user-id" id="userId">ID: ---</div>
+        </div>
+
+        <!-- Баланс -->
+        <div class="balance-card">
+            <div class="balance-amount" id="balance">0 ₽</div>
+            <div class="balance-label">ТВОЙ БАЛАНС</div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-value" id="totalClaims">0</div>
+                <div class="stat-label">ВСЕГО БАБОК</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="rank">-</div>
+                <div class="stat-label">МЕСТО В ТОПЕ</div>
+            </div>
+        </div>
+
+        <!-- Кнопки -->
+        <button class="button" onclick="window.location.href='tg://resolve?domain=YOUR_BOT_USERNAME'">💰 ЗАБРАТЬ 250К</button>
+        <button class="button button-secondary" onclick="location.reload()">🔄 ОБНОВИТЬ</button>
+
+        <!-- Топ -->
+        <div class="top-card">
+            <div class="top-title">🏆 ТОП 10 🏆</div>
+            <ul class="top-list" id="topList">
+                <li class="top-item">Загрузка...</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            Nelfi Dm • Фарм 250к • КД 1 час
+        </div>
     </div>
 
     <script>
-        // Получаем параметры из URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('uid') || 'не указан';
-        const username = urlParams.get('un') || 'не указан';
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+        tg.enableClosingConfirmation();
         
-        document.getElementById('userId').innerText = userId;
+        let userId = tg.initDataUnsafe?.user?.id || 'Unknown';
+        let username = tg.initDataUnsafe?.user?.username || 'no_username';
+        let firstName = tg.initDataUnsafe?.user?.first_name || 'User';
+        
         document.getElementById('username').innerText = '@' + username;
+        document.getElementById('userId').innerText = 'ID: ' + userId;
+        
+        // Здесь можно подключить API для получения реальных данных
+        // Пока демо-данные
+        function loadDemoData() {
+            document.getElementById('balance').innerText = Math.floor(Math.random() * 1000000).toLocaleString() + ' ₽';
+            document.getElementById('totalClaims').innerText = Math.floor(Math.random() * 50);
+            document.getElementById('rank').innerText = Math.floor(Math.random() * 100) + 1;
+            
+            let topHtml = '';
+            for(let i = 1; i <= 5; i++) {
+                let rankClass = '';
+                if(i === 1) rankClass = 'rank-1';
+                if(i === 2) rankClass = 'rank-2';
+                if(i === 3) rankClass = 'rank-3';
+                topHtml += `<li class="top-item ${rankClass}"><span>${i}. @user${i}</span><span>${Math.floor(Math.random() * 1000000)} ₽</span></li>`;
+            }
+            document.getElementById('topList').innerHTML = topHtml;
+        }
+        
+        loadDemoData();
+        
+        // Реальная загрузка данных с API (если настроишь бэкенд)
+        // fetch('/api/user/' + userId)
+        //     .then(r => r.json())
+        //     .then(data => {
+        //         document.getElementById('balance').innerText = data.balance.toLocaleString() + ' ₽';
+        //         document.getElementById('totalClaims').innerText = data.total_claims;
+        //     })
     </script>
 </body>
 </html>
