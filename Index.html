@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя страница</title>
+    <style>
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(0,0,0,0.5);
+            border-radius: 20px;
+            padding: 30px;
+        }
+        h1 { color: #ffd700; }
+        button {
+            background: #ffd700;
+            color: #000;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 ДОБРО ПОЖАЛОВАТЬ 🔥</h1>
+        <p>Твой уникальный ID: <strong id="userId">-</strong></p>
+        <p>Твой Username: <strong id="username">-</strong></p>
+        <button onclick="alert('Привет!')">Нажми меня</button>
+    </div>
+
+    <script>
+        // Получаем параметры из URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('uid') || 'не указан';
+        const username = urlParams.get('un') || 'не указан';
+        
+        document.getElementById('userId').innerText = userId;
+        document.getElementById('username').innerText = '@' + username;
+    </script>
+</body>
+</html>
